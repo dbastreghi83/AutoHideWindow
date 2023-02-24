@@ -1,0 +1,34 @@
+#Requires AutoHotkey v2.0
+
+apps := []
+
+;Window Title/ID/Class , Seconds to minimize after inactivation
+apps.Push(["Calc", 10])
+apps.Push(["WhatsApp", 5])
+apps.Push(["ahk_exe Notepad.exe", 2])
+apps.Push(["ahk_exe OUTLOOK.EXE", 2])
+
+Loop {
+	Sleep 100
+	Loop apps.Length {
+		app := apps[A_Index]
+		CheckIfActive(app[1], app[2])
+	}
+}
+
+return
+
+CheckIfActive(app, secs){
+	winId := WinExist(app)
+	if (winId){
+		if !(WinActive(app)){
+			if (secs <= 0){
+				WinMinimize app
+				
+			}else{
+				Sleep 1000
+				CheckIfActive(app, secs - 1)
+			}
+		}
+	}
+}
